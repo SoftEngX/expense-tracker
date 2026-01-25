@@ -12,7 +12,7 @@ const Header = () => {
         height={100}
         priority
       />
-      <Link href="/sign-up">
+      <Link href="/sign-in">
         <Button>Get Started</Button>
       </Link>
     </div>
