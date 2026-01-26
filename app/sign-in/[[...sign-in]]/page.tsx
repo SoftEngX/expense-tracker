@@ -17,10 +17,8 @@ export default function Page() {
           sizes="50vw"
         />
         
-        {/* Dark Overlay for better text readability */}
         <div className="absolute inset-0 bg-black/40"></div>
         
-        {/* Gradient Overlay for depth */}
         <div className="absolute inset-0 bg-gradient-to-br from-blue-900/30 via-transparent to-orange-900/20"></div>
         
         {/* Content */}
@@ -49,6 +47,9 @@ export default function Page() {
           {/* Form Card */}
           <div className="bg-white rounded-2xl shadow-2xl p-8 sm:p-10 border border-gray-100">
             <SignIn 
+              routing="path"
+              path="/sign-in"
+              afterSignInUrl="/"
               appearance={{
                 elements: {
                   rootBox: "w-full",
