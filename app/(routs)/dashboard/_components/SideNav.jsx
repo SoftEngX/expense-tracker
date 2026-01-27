@@ -29,9 +29,11 @@ function SideNav () {
     return (
         <div className='h-screen p-5 border shadow-sm'>
             <Image src={'/logo.png'} alt='logo' width={160} height={100} />
-            <div>
+            <div className='p-5'>
                 {menuList.map((menu, index)=> (
-                    <h2>
+                    <h2 className='flex gap-2 items-center 
+                        text-gray-500 font-medium p-5 cursor-pointer 
+                        rounded-md hover:text-primary hover:bg-blue-100'>
                         <menu.icon/>
                         {menu.name}
                     </h2>
