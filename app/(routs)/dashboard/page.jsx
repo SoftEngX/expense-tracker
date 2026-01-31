@@ -5,7 +5,7 @@ import { UserButton } from "@clerk/nextjs";
 
 const Dashboard = () => {
   return (
-    <div className="fixed">
+    <div>
       Dashboard
     </div>
   )
