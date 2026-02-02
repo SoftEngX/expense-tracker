@@ -1,8 +1,11 @@
 import React from 'react';
+import CreateBudget from './CreateBudget';
 
 function BudgetList() {
     return (
-        <div>BudgetList</div>
+        <div className='mt-7'>
+            <CreateBudget />
+        </div>
     )
 }
 
