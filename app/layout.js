@@ -1,6 +1,12 @@
+"use client"
+
 import { Outfit } from "next/font/google";
 import "./globals.css";
 import { ClerkProvider } from "@clerk/nextjs";
+import { db } from '@/utils/dbConfig.jsx';
+import { Budgets } from '@/utils/schema';
+import { useUser } from '@clerk/nextjs';
+import { eq } from 'drizzle-orm';
 
 const outfit = Outfit({ subsets: ["latin"] });
 
@@ -10,6 +16,20 @@ export const metadata = {
 };
 
 export default function RootLayout({ children }) {
+
+  const {user}=useUser();
+
+  useEffect(() => {
+    user&&checkUserBudgets();
+  }, [user])
+
+  const checkUserBudgets =async () => {
+    const result = await db.select()
+    .from(Budgets)
+    .where(eq(Budgets.createBy, user?.primaryEmailAddress?.emailAddress))
+
+    console.log(result)
+  }
   return (
     <ClerkProvider
       afterSignOutUrl="/"
