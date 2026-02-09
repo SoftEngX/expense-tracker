@@ -1,4 +1,7 @@
+'use client'
+
 import React from 'react';
+
 import {
     Dialog,
     DialogContent,
@@ -7,9 +10,10 @@ import {
     DialogTitle,
     DialogTrigger,
   } from "@/components/ui/dialog"
+  import 'emoji-picker-element';
 
 function CreateBudget() {
-    return (
+    return ( 
         <div>
             <Dialog>
                 <DialogTrigger asChild>
@@ -18,12 +22,14 @@ function CreateBudget() {
                     <h2>Create New Budget</h2>
                 </div>
                 </DialogTrigger>
-                <DialogContent>
+                <DialogContent className='bg-slate-100'>
                     <DialogHeader>
-                    <DialogTitle>Are you absolutely sure?</DialogTitle>
+                    <DialogTitle>Create New Budget</DialogTitle>
                     <DialogDescription>
-                        This action cannot be undone. This will permanently delete your account
-                        and remove your data from our servers.
+                        <div>
+                        <emoji-picker class="light"></emoji-picker>
+                        
+                        </div>
                     </DialogDescription>
                     </DialogHeader>
                 </DialogContent>
