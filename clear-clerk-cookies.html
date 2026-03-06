@@ -1,0 +1,182 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Clear Clerk Cookies</title>
+    <style>
+      body {
+        font-family:
+          -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu,
+          Cantarell, sans-serif;
+        max-width: 600px;
+        margin: 50px auto;
+        padding: 20px;
+        background: #f5f5f5;
+      }
+      .container {
+        background: white;
+        padding: 30px;
+        border-radius: 8px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      }
+      h1 {
+        color: #333;
+        margin-bottom: 20px;
+      }
+      button {
+        background: #6c47ff;
+        color: white;
+        border: none;
+        padding: 12px 24px;
+        border-radius: 6px;
+        font-size: 16px;
+        cursor: pointer;
+        margin: 10px 5px;
+      }
+      button:hover {
+        background: #5639cc;
+      }
+      .success {
+        background: #10b981;
+        padding: 15px;
+        border-radius: 6px;
+        color: white;
+        margin-top: 20px;
+        display: none;
+      }
+      .info {
+        background: #f3f4f6;
+        padding: 15px;
+        border-radius: 6px;
+        margin-top: 20px;
+        border-left: 4px solid #6c47ff;
+      }
+      .cookie-list {
+        background: #f9fafb;
+        padding: 15px;
+        border-radius: 6px;
+        margin-top: 15px;
+        font-family: monospace;
+        font-size: 14px;
+        max-height: 200px;
+        overflow-y: auto;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>🍪 Clear Clerk Cookies</h1>
+
+      <div class="info">
+        <strong>Why do I need this?</strong>
+        <p>
+          Your browser has expired Clerk session cookies that are causing
+          redirect issues. This tool will clear them.
+        </p>
+      </div>
+
+      <div id="cookieList" class="cookie-list"></div>
+
+      <button onclick="clearAllCookies()">Clear All Cookies</button>
+      <button onclick="clearClerkCookies()">Clear Only Clerk Cookies</button>
+      <button onclick="location.reload()">Refresh Page</button>
+
+      <div id="success" class="success">
+        ✅ Cookies cleared successfully! Now close this page and restart your
+        dev server.
+      </div>
+
+      <div class="info" style="margin-top: 20px">
+        <strong>Next steps:</strong>
+        <ol>
+          <li>Click "Clear All Cookies" or "Clear Only Clerk Cookies"</li>
+          <li>Close this page</li>
+          <li>Restart your dev server: <code>npm run dev</code></li>
+          <li>Visit <code>http://localhost:3000</code></li>
+        </ol>
+      </div>
+    </div>
+
+    <script>
+      function displayCookies() {
+        const cookies = document.cookie.split(";");
+        const cookieList = document.getElementById("cookieList");
+
+        if (
+          cookies.length === 0 ||
+          (cookies.length === 1 && cookies[0] === "")
+        ) {
+          cookieList.innerHTML = "<em>No cookies found</em>";
+        } else {
+          cookieList.innerHTML =
+            "<strong>Current cookies:</strong><br>" +
+            cookies.map((c) => c.trim()).join("<br>");
+        }
+      }
+
+      function clearAllCookies() {
+        const cookies = document.cookie.split(";");
+
+        for (let cookie of cookies) {
+          const eqPos = cookie.indexOf("=");
+          const name =
+            eqPos > -1 ? cookie.substr(0, eqPos).trim() : cookie.trim();
+
+          // Clear for all possible paths and domains
+          document.cookie =
+            name + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/";
+          document.cookie =
+            name +
+            "=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/;domain=localhost";
+          document.cookie =
+            name +
+            "=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/;domain=.localhost";
+        }
+
+        // Also clear localStorage and sessionStorage
+        localStorage.clear();
+        sessionStorage.clear();
+
+        document.getElementById("success").style.display = "block";
+        setTimeout(() => {
+          displayCookies();
+        }, 100);
+      }
+
+      function clearClerkCookies() {
+        const cookies = document.cookie.split(";");
+
+        for (let cookie of cookies) {
+          const eqPos = cookie.indexOf("=");
+          const name =
+            eqPos > -1 ? cookie.substr(0, eqPos).trim() : cookie.trim();
+
+          // Only clear Clerk-related cookies
+          if (
+            name.includes("clerk") ||
+            name.includes("__session") ||
+            name.includes("__client")
+          ) {
+            document.cookie =
+              name + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/";
+            document.cookie =
+              name +
+              "=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/;domain=localhost";
+            document.cookie =
+              name +
+              "=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/;domain=.localhost";
+          }
+        }
+
+        document.getElementById("success").style.display = "block";
+        setTimeout(() => {
+          displayCookies();
+        }, 100);
+      }
+
+      // Display cookies on load
+      displayCookies();
+    </script>
+  </body>
+</html>
